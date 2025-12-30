@@ -25,10 +25,7 @@ minesweeper-rl/
 │   ├── base_agent.py                   # BaseAgent class (standard API: act(), observe(), train())
 │   ├── dqn_agent/                      # DQN + CNN Agent
 │   │   ├── dqn_agent.py                # DQNAgent(BaseAgent)
-│   │   └── minesweeper_small.yaml      # Custom Configuration
-│   ├── dqn_cnn_agent                   # DQN + CNN Agent with Transfer Learning
-|   |   ├── dqn_cnn_agent.py            # DQN_CNN_Agent(BaseAgent)
-|   |   ├── minesweeper_small.yaml      # Custom Configuration
+│   │   └── config.yaml                 # Custom Configuration
 │   └── registry.py                     # Auto-discovery / loading of available models
 
 ├── evaluation/              # Code for running and comparing models
@@ -83,4 +80,5 @@ Common outputs:
 To evaluate a saved model, you can run:
 ```bash
 python -m evaluation.evaluate
+
 ```
