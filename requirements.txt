@@ -1,0 +1,8 @@
+flask
+numpy
+matplotlib
+torch
+pyyaml
+gymnasium
+pygame
+pandas
