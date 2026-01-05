@@ -102,7 +102,7 @@ class ReplayMemory:
 
 
 class DQNAgent(BaseAgent):
-    def __init__(self, config_name="minesweeper_small", config_path=os.path.join(os.path.dirname(__file__), "config.yaml")):
+    def __init__(self, config_name="config", config_path=os.path.join(os.path.dirname(__file__), "config.yaml")):
         
         super().__init__()
         with open(config_path, "r") as f:
@@ -630,5 +630,6 @@ if __name__ == "__main__":
 
 
     print(f"✅ Saved plots to: {plot_dir}")
+
 
 
