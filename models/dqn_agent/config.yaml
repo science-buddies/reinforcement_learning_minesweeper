@@ -1,4 +1,4 @@
-minesweeper_1:
+minesweeper1:
   discount_factor_g: 0.95
   env_make_params:
     board:
@@ -15,3 +15,4 @@ minesweeper_1:
   replay_memory_size: 250000
 
   enable_flagging: True  
+
