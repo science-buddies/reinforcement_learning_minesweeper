@@ -555,6 +555,9 @@ if __name__ == "__main__":
     import os
 
     config_path = os.path.join(os.path.dirname(__file__), "config.yaml")
+
+    print("Available config_name values:", list(all_configs.keys()))
+    
     agent = DQNAgent(config_name="minesweeper_1", config_path=config_path)
     board_cfg = agent.config["env_make_params"]["board"]
 
@@ -633,6 +636,7 @@ if __name__ == "__main__":
 
 
     print(f"✅ Saved plots to: {plot_dir}")
+
 
 
 
