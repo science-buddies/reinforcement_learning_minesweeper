@@ -556,6 +556,9 @@ if __name__ == "__main__":
 
     config_path = os.path.join(os.path.dirname(__file__), "config.yaml")
 
+    # TODO: Delete print
+    with open(config_path, "r") as f:
+        all_configs = yaml.safe_load(f)
     print("Available config_name values:", list(all_configs.keys()))
     
     agent = DQNAgent(config_name="minesweeper_1", config_path=config_path)
@@ -636,6 +639,7 @@ if __name__ == "__main__":
 
 
     print(f"✅ Saved plots to: {plot_dir}")
+
 
 
 
