@@ -107,6 +107,9 @@ class DQNAgent(BaseAgent):
         super().__init__()
         with open(config_path, "r") as f:
             all_configs = yaml.safe_load(f)
+
+            print("Available config_name values:", list(all_configs.keys()))
+
             cfg = all_configs[config_name]
 
         # Store config
@@ -630,6 +633,7 @@ if __name__ == "__main__":
 
 
     print(f"✅ Saved plots to: {plot_dir}")
+
 
 
 
