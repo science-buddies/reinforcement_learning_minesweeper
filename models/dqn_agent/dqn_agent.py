@@ -14,11 +14,8 @@ import yaml
 import os
 
 import csv
-
+# Basic DQN Network
 class DQN(nn.Module):
-    # Basic DQN network
-    # def __init__(self, input_dim: int, output_dim: int, fc1_nodes: int=256):
-
     class ConvModule(nn.Module):
         def __init__(self, in_channels, out_channels, kernel_size=3, padding=1):
             super(DQN.ConvModule, self).__init__()
@@ -45,9 +42,7 @@ class DQN(nn.Module):
         hidden_dim = 256
 
         self.fc1 = nn.Linear(fc_input_dim, hidden_dim)
-
         self.fc2 = nn.Linear(hidden_dim, hidden_dim)
-
         self.final_fc = nn.Linear(hidden_dim, output_dim)
 
         print(f"Initialized CNN DQN with input shape ({input_channels}, {board_size}, {board_size}) → output_dim={output_dim}")
@@ -80,7 +75,6 @@ class DQN(nn.Module):
 
         return x
 
-    
 class ReplayMemory:
     # Replay buffer
     def __init__(self, capacity: int):
@@ -233,7 +227,7 @@ class DQNAgent(BaseAgent):
                 cell = board[r][c]
                 base_idx = (r * W + c) * (2 if self.enable_flagging else 1)
 
-                # legal only if hidden or flagged (flagging allowed)
+                # Legal only if hidden or flagged (flagging allowed)
                 hidden = (cell == -3 or cell is None)
                 flagged = (cell == -2 or cell == "F")
 
@@ -253,9 +247,6 @@ class DQNAgent(BaseAgent):
 
         return mask
 
-
-
-    # This one definitely works
     def act(self, observation: Dict) -> Tuple[str, int, int]:
         """
         Decide on an action based on the current game observation.
@@ -289,7 +280,7 @@ class DQNAgent(BaseAgent):
         else:
 
             board = np.array(observation["board"])
-            state_tensor = self.encode_board(board).unsqueeze(0).to(self.device)  # shape (1,10,8,8)
+            state_tensor = self.encode_board(board).unsqueeze(0).to(self.device)
 
 
             with torch.no_grad():
@@ -348,16 +339,13 @@ class DQNAgent(BaseAgent):
         # compute action indices
         action_indices = []
         for t in batch:
-            # print("action in batch:", t["action"])
             r, c, action_type = t["action"]
             if self.enable_flagging:
-                # idx = ((r * self.width) + c) * 2 + (0 if action_type == "reveal" else 1)
                  idx = ((r * self.width) + c) * 2 + int(action_type)
             else:
                 idx = (r * self.width) + c
             action_indices.append(idx)
         action_indices = torch.LongTensor(action_indices).unsqueeze(1).to(self.device)
-        # print(action_indices)
 
         # Compute Q values
         model_outputs = self.policy_net(states)
@@ -366,7 +354,6 @@ class DQNAgent(BaseAgent):
         next_q_values = next_q_values.clamp(-1, 1)
         target = rewards + self.gamma * next_q_values * (1 - dones)
 
-        # loss = nn.functional.mse_loss(q_values.squeeze(), target)
         loss = nn.functional.smooth_l1_loss(q_values.squeeze(), target)
         self.optimizer.zero_grad()
         loss.backward()
@@ -437,8 +424,8 @@ class DQNAgent(BaseAgent):
                             start_episode = int(parts[0]) + 1
 
                             # TODO: Continue epsilon or not
-                            # epsilon = float(parts[3])
-                            # self.epsilon = epsilon  # continue epsilon decay
+                            epsilon = float(parts[3])
+                            self.epsilon = epsilon  # continue epsilon decay
             except Exception as e:
                 print(f"Warning: could not read last episode from log ({e}). Starting from 1.")
         else:
@@ -511,7 +498,7 @@ class DQNAgent(BaseAgent):
                 if episode % 1000 == 0:
                     # Save model every 1000 episodes
                     torch.save(self.policy_net.state_dict(), save_path)
-                    print(f"✅ Model checkpoint saved to {save_path} at episode {episode}")
+                    print(f"Model checkpoint saved to {save_path} at episode {episode}")
 
         finally:
             # Always flush remaining logs
@@ -521,7 +508,7 @@ class DQNAgent(BaseAgent):
                     writer.writerows(log_buffer)
             print(f"Logs saved to {csv_path}")
 
-            # 💾 Save model
+            # Save model
             torch.save(self.policy_net.state_dict(), save_path)
             print(f"Model saved to {save_path}")
 
@@ -556,12 +543,6 @@ if __name__ == "__main__":
 
     config_path = os.path.join(os.path.dirname(__file__), "config.yaml")
 
-    # TODO: Delete print
-    with open(config_path, "r") as f:
-        all_configs = yaml.safe_load(f)
-    print("Config path:", config_path)
-    print("Available config_name values:", list(all_configs.keys()))
-    
     agent = DQNAgent(config_name="minesweeper_1", config_path=config_path)
     board_cfg = agent.config["env_make_params"]["board"]
 
@@ -571,9 +552,7 @@ if __name__ == "__main__":
         render_mode=render_mode
     )
 
-
-    input("Press Enter to start training...")
-    print(f"🚀 Starting training for {args.episodes} episodes...")
+    print(f"Starting training for {args.episodes} episodes...")
     try:
         agent.train_for_episodes(env, num_episodes=args.episodes, save_path=args.save_path)
     except KeyboardInterrupt:
@@ -581,7 +560,7 @@ if __name__ == "__main__":
         agent.save(args.save_path)
         print(f"Model saved to {args.save_path}")
 
-    # Make graphs from training_data.csv using your preferred tool using matplotlib
+    # Make graphs from training_data.csv using your preferred tool, using matplotlib
     import os
     import pandas as pd
     import matplotlib.pyplot as plt
@@ -639,7 +618,8 @@ if __name__ == "__main__":
     plt.close()
 
 
-    print(f"✅ Saved plots to: {plot_dir}")
+    print(f"Saved plots to: {plot_dir}")
+
 
 
 
