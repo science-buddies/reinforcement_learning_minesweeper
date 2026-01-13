@@ -1,4 +1,4 @@
-# 🧠 Minesweeper Reinforcement Learning Project
+# Minesweeper Reinforcement Learning Project
 
 This project trains and evaluates reinforcement learning agents to play Minesweeper.
 This project includes a Minesweeper environment (Gymnasium-style) and a Deep Q-Network (DQN) agent with a CNN backbone.
@@ -67,11 +67,6 @@ To train the DQNAgent, you can run:
 python -m models.dqn_agent.dqn_agent --episodes 100
 ```
 
-Similarly, to train the DQN_CNN_Agent, you can run:
-```bash
-python -m models.dqn_cnn_agent.dqn_cnn_agent --episodes 100
-```
-
 Common outputs:
 - A saved model checkpoint (.pth)
 - A CSV of training states (loss, reward, epsilon, steps)
@@ -80,5 +75,5 @@ Common outputs:
 To evaluate a saved model, you can run:
 ```bash
 python -m evaluation.evaluate
-
 ```
+
