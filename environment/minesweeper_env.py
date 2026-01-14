@@ -46,17 +46,6 @@ class MinesweeperEnv(gym.Env):
         })
 
         self.max_possible_moves = self.board_width * self.board_height - self.num_mines
-        # self.step_efficiency_bonus = 0.5
-        # self.R_win = 10.0
-        # self.R_mine_hit = -10.0
-        # self.R_safe_reveal = 2
-        # self.step_penalty = -0.5
-        # self.exceed_flags = -20.0
-        # self.false_flag_penalty = -2
-        # self.correct_flag_reward = 3
-        # self.moves_taken = 0
-        # self._episode_count = 0
-        # self.num_current_flags = 0
 
         self.step_efficiency_bonus = 0.5
         self.R_win = 100 
@@ -302,4 +291,5 @@ if __name__ == "__main__":
         print("Step Result:", obs, reward, terminated, truncated, info)
         if terminated:
             obs, info = env.reset()
+
             print(obs, info)
