@@ -566,3 +566,57 @@ if __name__ == "__main__":
     )
 
     agent.train_for_episodes(env, num_episodes=args.episodes, save_path=args.save_path)
+    # Path to the CSV file
+    csv_path = os.path.join(os.path.dirname(__file__), "training_data.csv")
+
+    # Load CSV
+    df = pd.read_csv(csv_path)
+    print(f"Loaded {len(df)} episodes from {csv_path}")
+    print(df.head())
+
+    # Create output directory for plots
+    plot_dir = os.path.join(os.path.dirname(__file__), "plots")
+    os.makedirs(plot_dir, exist_ok=True)
+
+    # Plot 1: Total Reward vs Episode
+    plt.figure()
+    plt.plot(df["Episode"], df["Total Reward"])
+    plt.title("Total Reward per Episode")
+    plt.xlabel("Episode")
+    plt.ylabel("Total Reward")
+    plt.grid(True)
+    plt.savefig(os.path.join(plot_dir, "reward_curve.png"))
+    plt.close()
+
+    # Plot 2: Average Loss vs Episode
+    plt.figure()
+    plt.plot(df["Episode"], df["Average Loss"])
+    plt.title("Average Loss per Episode")
+    plt.xlabel("Episode")
+    plt.ylabel("Average Loss")
+    plt.grid(True)
+    plt.savefig(os.path.join(plot_dir, "loss_curve.png"))
+    plt.close()
+
+    # Plot 3: Epsilon vs Episode
+    plt.figure()
+    plt.plot(df["Episode"], df["Epsilon"])
+    plt.title("Epsilon Decay over Time")
+    plt.xlabel("Episode")
+    plt.ylabel("Epsilon")
+    plt.grid(True)
+    plt.savefig(os.path.join(plot_dir, "epsilon_curve.png"))
+    plt.close()
+
+    # Plot 4: Episode Length vs Episode
+    plt.figure()
+    plt.plot(df["Episode"], df["Episode Length"])
+    plt.title("Episode Length per Episode")
+    plt.xlabel("Episode")
+    plt.ylabel("Episode Length (steps)")
+    plt.grid(True)
+    plt.savefig(os.path.join(plot_dir, "episode_length_curve.png"))
+    plt.close()
+
+
+    print(f"✅ Saved plots to: {plot_dir}")
