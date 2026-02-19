@@ -566,6 +566,11 @@ if __name__ == "__main__":
     )
 
     agent.train_for_episodes(env, num_episodes=args.episodes, save_path=args.save_path)
+
+    # Make graphs from training_data.csv using your preferred tool using matplotlib
+    import os
+    import pandas as pd
+    import matplotlib.pyplot as plt
     # Path to the CSV file
     csv_path = os.path.join(os.path.dirname(__file__), "training_data.csv")
 
@@ -620,3 +625,4 @@ if __name__ == "__main__":
 
 
     print(f"✅ Saved plots to: {plot_dir}")
+
