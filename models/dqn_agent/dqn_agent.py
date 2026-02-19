@@ -539,3 +539,30 @@ class DQNAgent(BaseAgent):
             # Always save state at end/interrupt
             self.save_training_state(save_path)
             print(f"Final checkpoint saved to {save_path} (plus sidecars).")
+
+if __name__ == "__main__":
+    import argparse
+    from environment.minesweeper_env import MinesweeperEnv  # adjust if your path differs
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--episodes", type=int, default=100)
+    parser.add_argument("--save_path", type=str, default="models/saved_models/dqn_model.pth")
+    parser.add_argument("--render", action="store_true")
+    args = parser.parse_args()
+
+    render_mode = "human" if args.render else None
+
+    agent = DQNAgent(
+        config_name="minesweeper_1",
+        config_path=os.path.join(os.path.dirname(__file__), "config.yaml"),
+    )
+
+    # Build env from config
+    board_cfg = agent.config["env_make_params"]["board"]
+    env = MinesweeperEnv(
+        board_size=(board_cfg["width"], board_cfg["height"]),
+        num_mines=board_cfg["num_mines"],
+        render_mode=render_mode,
+    )
+
+    agent.train_for_episodes(env, num_episodes=args.episodes, save_path=args.save_path)
